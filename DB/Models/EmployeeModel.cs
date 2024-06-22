@@ -62,6 +62,9 @@
             Company = company;
         }
 
+        private EmployeeModel()
+        { }
+
         /// <summary>
         /// Устанавливает компанию, к которой принадлежит сотрудник.
         /// Если <paramref name="company"/> равно <see langword="null"/>, сотрудник увольняется из текущей компании.

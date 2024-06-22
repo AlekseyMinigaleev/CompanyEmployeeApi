@@ -3,36 +3,50 @@
     /// <summary>
     /// Модель компании.
     /// </summary>
-    public class CompanyModel(
-        string name,
-        string address,
-        string industry,
-        ICollection<EmployeeModel> employees)
+    public class CompanyModel
     {
         /// <summary>
         /// Уникальный идентификатор компании.
         /// </summary>
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Название компании.
         /// </summary>
-        public string Name { get; private set; } = name;
+        public string Name { get; private set; }
 
         /// <summary>
         /// Адрес компании.
         /// </summary>
-        public string Address { get; private set; } = address;
+        public string Address { get; private set; }
 
         /// <summary>
         /// Отрасль компании.
         /// </summary>
-        public string Industry { get; private set; } = industry;
+        public string Industry { get; private set; }
 
         /// <summary>
         /// Список сотрудников компании.
         /// </summary>
-        public ICollection<EmployeeModel> Employees { get; private set; } = employees;
+        public ICollection<EmployeeModel> Employees { get; private set; }
+
+        public CompanyModel(
+            string name,
+            string address,
+            string industry,
+            ICollection<EmployeeModel> employees)
+             
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Address = address;
+            Industry = industry;
+            Employees = employees;
+        }
+
+        private CompanyModel()
+        { }
+
 
         /// <summary>
         /// Устанавливает список сотрудников компании и обновляет их принадлежность к текущей компании.
