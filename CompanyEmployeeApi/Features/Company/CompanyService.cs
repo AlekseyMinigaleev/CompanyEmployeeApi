@@ -46,9 +46,10 @@ namespace CompanyEmployeeApi.Features.Company
             foreach (var employeeVM in employeeVMs)
             {
                 var employee = new EmployeeModel(
-                    employeeVM.FirstName,
-                    employeeVM.LastName,
-                    employeeVM.Position,
+                    firstName: employeeVM.FirstName,
+                    lastName:employeeVM.LastName,
+                    position: employeeVM.Position,
+                    email: employeeVM.Email,
                     company: company);
 
                 employees.Add(employee);

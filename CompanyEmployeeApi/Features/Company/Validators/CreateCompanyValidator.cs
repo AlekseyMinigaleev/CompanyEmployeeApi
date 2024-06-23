@@ -1,14 +1,16 @@
 ﻿using CompanyEmployeeApi.Features.Compnay.Models;
-using CompanyEmployeeApi.Features.Employee.Models.Validators;
+using CompanyEmployeeApi.Features.Employee.Validators;
+using DB;
 using FluentValidation;
 
 namespace CompanyEmployeeApi.Features.Company.Validators
 {
     public class CreateCompanyValidator : AbstractValidator<CreateCompanyViewModel>
     {
-        public CreateCompanyValidator()
+        public CreateCompanyValidator(
+            AppDbContext dbContext)
         {
-            RuleForEach(x => x.Employees).SetValidator(new BaseEmployeeValidator());
+            RuleForEach(x => x.Employees).SetValidator(new BaseEmployeeValidator(dbContext));
         }
     }
 

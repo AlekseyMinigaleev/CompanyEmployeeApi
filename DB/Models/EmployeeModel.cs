@@ -26,6 +26,11 @@
         public string Position { get; private set; }
 
         /// <summary>
+        /// Электронная почта сотрудника.
+        /// </summary>
+        public string Email { get; private set; }
+
+        /// <summary>
         /// Дата начала работы сотрудника в компании.
         /// </summary>
         public DateTime? EmploymentDate { get; private set; }
@@ -49,12 +54,14 @@
             string firstName,
             string lastName,
             string position,
+            string email,
             CompanyModel? company)
         {
             Id = Guid.NewGuid();
             FirstName = firstName;
             LastName = lastName;
             Position = position;
+            Email = email;
 
             if (company is not null)
                 EmploymentDate = DateTime.UtcNow;
