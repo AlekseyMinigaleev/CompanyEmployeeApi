@@ -1,5 +1,4 @@
-using DB;
-using Microsoft.EntityFrameworkCore;
+using CompanyEmployeeApi.Extenstions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,15 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-var connectionString = builder.Configuration
-    .GetConnectionString("DefaultConnection") 
-    ?? throw new InvalidOperationException(
-        "Не удалось найти строку подключения к базе данных 'DefaultConnection'. Пожалуйста, укажите её в конфигурации вашего приложения.");
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString)
-);
+builder.Services.AddStorage(builder.Configuration);
 
 var app = builder.Build();
 
@@ -27,8 +18,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.MapControllers();
 
-app.Run();
+await app.InitApplicationAsync();
+
+await app.RunAsync();
