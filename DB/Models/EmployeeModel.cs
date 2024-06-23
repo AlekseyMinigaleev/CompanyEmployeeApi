@@ -49,7 +49,7 @@
             string firstName,
             string lastName,
             string position,
-            CompanyModel company)
+            CompanyModel? company)
         {
             Id = Guid.NewGuid();
             FirstName = firstName;
@@ -60,6 +60,7 @@
                 EmploymentDate = DateTime.UtcNow;
 
             Company = company;
+            CompanyId = company?.Id;
         }
 
         private EmployeeModel()

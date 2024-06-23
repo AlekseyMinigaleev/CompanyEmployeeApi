@@ -1,4 +1,5 @@
-﻿using DB;
+﻿using CompanyEmployeeApi.Features.Company;
+using DB;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyEmployeeApi.Extenstions
@@ -15,6 +16,11 @@ namespace CompanyEmployeeApi.Extenstions
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(connectionString)
             );
+        }
+
+        public static void AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<ICompanyService, CompanyService>();
         }
     }
 }
