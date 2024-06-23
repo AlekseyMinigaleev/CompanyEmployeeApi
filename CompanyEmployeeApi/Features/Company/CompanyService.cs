@@ -1,4 +1,5 @@
 ﻿using CompanyEmployeeApi.Features.Compnay.Models;
+using CompanyEmployeeApi.Features.Employee.Models;
 using DB;
 using DB.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,34 +11,18 @@ namespace CompanyEmployeeApi.Features.Company
         private readonly AppDbContext _dbContext = dbContext;
 
         public async Task<CompanyModel> CreateCompanyAsync(
-            CreateCompanyViewModel createCompany,
+            CreateCompanyViewModel createCompanyVM,
             CancellationToken cancellationToken)
         {
             var company = new CompanyModel(
-                name: createCompany.Name,
-                address: createCompany.Address,
-                industry: createCompany.Industry,
-                employees: []);
+               name: createCompanyVM.Name,
+               address: createCompanyVM.Address,
+               industry: createCompanyVM.Industry,
+               employees: []);
 
-            await _dbContext.Companies
-               .AddAsync(company, cancellationToken);
+            var employees = CreateEmployees(company, createCompanyVM.Employees);
 
-            var employees = new List<EmployeeModel>();
-            foreach (var employeeViewModel in createCompany.Employees)
-            {
-                var employee = new EmployeeModel(
-                    employeeViewModel.FirstName,
-                    employeeViewModel.LastName,
-                    employeeViewModel.Position,
-                    company: company);
-
-                employees.Add(employee);
-            }
-            await _dbContext.Employees
-                .AddRangeAsync(employees, cancellationToken);
-
-            await _dbContext
-                .SaveChangesAsync(cancellationToken);
+            await SaveCompanyToDbAsync(company, employees, cancellationToken);
 
             return company;
         }
@@ -50,6 +35,40 @@ namespace CompanyEmployeeApi.Features.Company
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             return company;
+        }
+
+        private static List<EmployeeModel> CreateEmployees(
+            CompanyModel company,
+            BaseEmployeeViewModel[] employeeVMs)
+        {
+            var employees = new List<EmployeeModel>();
+
+            foreach (var employeeVM in employeeVMs)
+            {
+                var employee = new EmployeeModel(
+                    employeeVM.FirstName,
+                    employeeVM.LastName,
+                    employeeVM.Position,
+                    company: company);
+
+                employees.Add(employee);
+            }
+
+            return employees;
+        }
+
+        private async Task SaveCompanyToDbAsync(
+            CompanyModel company,
+            ICollection<EmployeeModel> employees,
+            CancellationToken cancellationToken)
+        {
+            await _dbContext.Companies
+            .AddAsync(company, cancellationToken);
+
+            await _dbContext.Employees
+                .AddRangeAsync(employees, cancellationToken);
+            await _dbContext
+                .SaveChangesAsync(cancellationToken);
         }
     }
 }
