@@ -10,6 +10,7 @@ namespace CompanyEmployeeApi.Features.Company.Validators
         public CreateCompanyValidator(
             AppDbContext dbContext)
         {
+            Include(new BaseCompanyValidator(dbContext));
             RuleForEach(x => x.Employees).SetValidator(new BaseEmployeeValidator(dbContext));
         }
     }

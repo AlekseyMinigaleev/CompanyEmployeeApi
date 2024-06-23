@@ -1,4 +1,7 @@
 using CompanyEmployeeApi.Extenstions;
+using CompanyEmployeeApi.Features.Company.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddServices();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCompanyValidator>();
+builder.Services.AddFluentValidationClientsideAdapters();
 
 var app = builder.Build();
 
