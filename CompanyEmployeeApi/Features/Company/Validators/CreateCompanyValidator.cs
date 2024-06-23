@@ -16,12 +16,21 @@ namespace CompanyEmployeeApi.Features.Company.Validators
 
     public class BaseCompanyValidator : AbstractValidator<BaseCompanyViewModel>
     {
-        public BaseCompanyValidator()
+        public BaseCompanyValidator(AppDbContext dbContext)
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
                     .WithErrorCode(nameof(BaseCompanyViewModel.Name))
-                    .WithMessage($"{nameof(BaseCompanyViewModel.Name)} is required.");
+                    .WithMessage($"{nameof(BaseCompanyViewModel.Name)} is required.")
+                 .Must(name =>
+                 {
+                     var company = dbContext.Companies
+                        .SingleOrDefault(x => x.Name.Equals(name));
+
+                     return company is null;
+                 })
+                    .WithErrorCode(nameof(BaseCompanyViewModel.Name))
+                    .WithMessage($"{nameof(BaseCompanyViewModel.Name)} is unique.");
 
             RuleFor(x => x.Address)
                 .NotEmpty()

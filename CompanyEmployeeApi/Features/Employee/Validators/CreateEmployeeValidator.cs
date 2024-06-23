@@ -7,10 +7,10 @@ namespace CompanyEmployeeApi.Features.Employee.Validators
 {
     public class CreateEmployeeValidator : AbstractValidator<CreateEmployeeViewModel>
     {
-        public CreateEmployeeValidator()
+        public CreateEmployeeValidator(AppDbContext dbContext)
         {
             RuleFor(x => x.Company)
-                .SetValidator(new BaseCompanyValidator());
+                .SetValidator(new BaseCompanyValidator(dbContext));
         }
     }
 
