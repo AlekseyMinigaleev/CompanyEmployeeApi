@@ -14,6 +14,9 @@ namespace DB.ModelsConfigurations
             builder.HasMany(x => x.Employees)
                 .WithOne(x => x.Company)
                 .HasForeignKey(x => x.Id);
+
+            builder.HasIndex(x => x.Name)
+                .IsUnique();
         }
     }
 }

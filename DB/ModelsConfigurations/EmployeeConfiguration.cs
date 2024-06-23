@@ -11,8 +11,9 @@ namespace DB.ModelsConfigurations
             builder.ToTable("Employee")
                 .HasKey(x => x.Id);
 
-            builder.Property(x => x.Email)
-                .IsUnicode(true);
+            builder
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }
