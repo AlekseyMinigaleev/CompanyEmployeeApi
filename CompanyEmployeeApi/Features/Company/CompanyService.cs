@@ -47,7 +47,7 @@ namespace CompanyEmployeeApi.Features.Company
             {
                 var employee = new EmployeeModel(
                     firstName: employeeVM.FirstName,
-                    lastName:employeeVM.LastName,
+                    lastName: employeeVM.LastName,
                     position: employeeVM.Position,
                     email: employeeVM.Email,
                     company: company);
@@ -68,6 +68,7 @@ namespace CompanyEmployeeApi.Features.Company
 
             await _dbContext.Employees
                 .AddRangeAsync(employees, cancellationToken);
+
             await _dbContext
                 .SaveChangesAsync(cancellationToken);
         }

@@ -10,6 +10,7 @@ namespace CompanyEmployeeApi.Features.Employee.Validators
         public CreateEmployeeValidator(AppDbContext dbContext)
         {
             Include(new BaseEmployeeValidator(dbContext));
+
             RuleFor(x => x.Company)
                 .SetValidator(new BaseCompanyValidator(dbContext));
         }
@@ -35,12 +36,15 @@ namespace CompanyEmployeeApi.Features.Employee.Validators
                     .WithMessage($"{nameof(BaseEmployeeViewModel.Position)} is required.");
 
             RuleFor(x => x.Email)
+                .EmailAddress()
+                    .WithErrorCode(nameof(BaseEmployeeViewModel.Email))
+                    .WithMessage($"{nameof(BaseEmployeeViewModel.Email)} is Email.")
                 .Must((email) =>
                 {
                     var employee = dbContext.Employees
                         .SingleOrDefault(x => x.Email == email);
 
-                    return employee is not null;
+                    return employee is null;
                 })
                     .WithErrorCode(nameof(BaseEmployeeViewModel.Email))
                     .WithMessage($"{nameof(BaseEmployeeViewModel.Email)} is unique.");

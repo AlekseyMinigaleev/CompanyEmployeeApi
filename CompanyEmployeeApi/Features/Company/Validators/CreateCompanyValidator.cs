@@ -1,4 +1,5 @@
 ﻿using CompanyEmployeeApi.Features.Compnay.Models;
+using CompanyEmployeeApi.Features.Employee.Models;
 using CompanyEmployeeApi.Features.Employee.Validators;
 using DB;
 using FluentValidation;
@@ -11,7 +12,18 @@ namespace CompanyEmployeeApi.Features.Company.Validators
             AppDbContext dbContext)
         {
             Include(new BaseCompanyValidator(dbContext));
-            RuleForEach(x => x.Employees).SetValidator(new BaseEmployeeValidator(dbContext));
+
+            RuleFor(x => x)
+                .Must(x =>
+                {
+                    var employeeEmails = x.Employees.Select(e => e.Email).ToList();
+                    return employeeEmails.Distinct().Count() == employeeEmails.Count;
+                })
+                .WithErrorCode(nameof(CreateCompanyViewModel.Employees))
+                .WithMessage($"{nameof(BaseEmployeeViewModel.Email)} is unique.");
+
+            RuleForEach(x => x.Employees)
+                .SetValidator(new BaseEmployeeValidator(dbContext));
         }
     }
 
