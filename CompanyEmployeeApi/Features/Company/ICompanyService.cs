@@ -1,4 +1,4 @@
-﻿using CompanyEmployeeApi.Features.Compnay.Models;
+﻿using CompanyEmployeeApi.Features.Company.Models;
 using DB.Models;
 
 namespace CompanyEmployeeApi.Features.Company

@@ -1,4 +1,4 @@
-﻿using CompanyEmployeeApi.Features.Compnay.Models;
+﻿using CompanyEmployeeApi.Features.Company.Models;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace CompanyEmployeeApi.Features.Company
         private readonly ICompanyService _companyService = companyService;
 
         [HttpGet("get-all")]
-        public async Task<ActionResult> GetAllCompanies(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var companies = await _companyService
                 .GetAllCompaniesAsync(cancellationToken);
@@ -18,7 +18,7 @@ namespace CompanyEmployeeApi.Features.Company
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCompanyById(
+        public async Task<IActionResult> GetById(
             Guid id,
             CancellationToken cancellationToken)
         {
@@ -45,7 +45,10 @@ namespace CompanyEmployeeApi.Features.Company
             var createdCompany = await _companyService
                 .CreateCompanyAsync(company, cancellationToken);
 
-            return CreatedAtAction(nameof(GetCompanyById), new { id = createdCompany.Id }, createdCompany);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdCompany.Id },
+                createdCompany);
         }
     }
 }
