@@ -19,5 +19,10 @@ namespace CompanyEmployeeApi.Features.Company
         public Task<CompanyModel?> DeleteByIdsAsync(
             Guid id,
             CancellationToken cancellationToken);
+
+        public Task<CompanyModel?> UpdateByIdAsync(
+            Guid id,
+            UpdateCompanyViewModel companyVM,
+            CancellationToken cancellationToken);
     }
 }

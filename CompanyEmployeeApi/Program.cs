@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddServices();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateCompanyValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CompanyValidator>();
 builder.Services.AddFluentValidationClientsideAdapters();
 
 var app = builder.Build();

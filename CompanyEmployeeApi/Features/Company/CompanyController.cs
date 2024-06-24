@@ -33,17 +33,17 @@ namespace CompanyEmployeeApi.Features.Company
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateCompany(
-            [FromBody] CreateCompanyViewModel company,
+            [FromBody] CreateCompanyViewModel companyVM,
             [FromServices] IValidator<CreateCompanyViewModel> validator,
             CancellationToken cancellationToken)
         {
-            await ValidateAndChangeModelStateAsync(validator, company, cancellationToken);
+            await ValidateAndChangeModelStateAsync(validator, companyVM, cancellationToken);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var createdCompany = await _companyService
-                .CreateAsync(company, cancellationToken);
+                .CreateAsync(companyVM, cancellationToken);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -52,17 +52,43 @@ namespace CompanyEmployeeApi.Features.Company
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(
+        public async Task<IActionResult> DeleteByIdAsync(
             Guid id,
             CancellationToken cancellationToken)
         {
             var deletedCompany = await _companyService
                 .DeleteByIdsAsync(id, cancellationToken);
 
-            if(deletedCompany is null)
+            if (deletedCompany is null)
                 return NotFound();
 
             return Ok(deletedCompany);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateByIdAsync(
+            Guid id,
+            [FromBody] UpdateCompanyViewModel companyVM,
+            [FromServices] IValidator<UpdateCompanyViewModel> validator,
+            CancellationToken cancellationToken)
+        {
+            companyVM.CompanyId = id;
+
+            await ValidateAndChangeModelStateAsync(validator, companyVM, cancellationToken);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var updatedCompany = await _companyService
+                .UpdateByIdAsync(id, companyVM, cancellationToken);
+
+            if (updatedCompany is null)
+                return NotFound();
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = updatedCompany.Id },
+                updatedCompany);
         }
     }
 }
