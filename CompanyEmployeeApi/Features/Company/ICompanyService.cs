@@ -5,8 +5,15 @@ namespace CompanyEmployeeApi.Features.Company
 {
     public interface ICompanyService
     {
-        Task<CompanyModel> CreateCompanyAsync(CreateCompanyViewModel createCompany, CancellationToken cancellationToken);
+        public Task<CompanyModel> CreateCompanyAsync(
+            CreateCompanyViewModel createCompany,
+            CancellationToken cancellationToken);
 
-        Task<CompanyModel?> GetCompanyByIdAsync(Guid id, CancellationToken cancellationToken);
+        public Task<CompanyModel?> GetCompanyByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken);
+
+        public Task<CompanyModel[]> GetAllCompaniesAsync(
+            CancellationToken cancellationToken);
     }
 }

@@ -27,6 +27,11 @@ namespace CompanyEmployeeApi.Features.Company
             return company;
         }
 
+        public async Task<CompanyModel[]> GetAllCompaniesAsync(CancellationToken cancellationToken) =>
+            await _dbContext.Companies
+                .Include(x => x.Employees)
+                .ToArrayAsync(cancellationToken);
+
         public async Task<CompanyModel?> GetCompanyByIdAsync(
             Guid id,
             CancellationToken cancellationToken)

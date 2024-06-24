@@ -8,10 +8,13 @@ namespace CompanyEmployeeApi.Features.Company
     {
         private readonly ICompanyService _companyService = companyService;
 
-        [HttpGet("get")]
-        public async Task<ActionResult> GetAllCompanies()
+        [HttpGet("get-all")]
+        public async Task<ActionResult> GetAllCompanies(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var companies = await _companyService
+                .GetAllCompaniesAsync(cancellationToken);
+
+            return Ok(companies);
         }
 
         [HttpGet("{id}")]
