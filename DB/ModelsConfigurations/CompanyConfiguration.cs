@@ -13,7 +13,7 @@ namespace DB.ModelsConfigurations
 
             builder.HasMany(x => x.Employees)
                 .WithOne(x => x.Company)
-                .HasForeignKey(x => x.Id);
+                .HasForeignKey(x => x.CompanyId);
 
             builder.HasIndex(x => x.Name)
                 .IsUnique();
