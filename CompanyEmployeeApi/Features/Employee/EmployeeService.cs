@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CompanyEmployeeApi.Features.Employee
 {
-    public class EmployeeService(AppDbContext dbContext)
+    public class EmployeeService(AppDbContext dbContext) : IEmployeeService
     {
         private readonly AppDbContext _dbContext = dbContext;
 

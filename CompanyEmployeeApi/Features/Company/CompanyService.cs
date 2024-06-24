@@ -47,7 +47,7 @@ namespace CompanyEmployeeApi.Features.Company
             return company;
         }
 
-        public async Task<CompanyModel?> DeleteByIdsAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<CompanyModel?> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var companyToDelete = await _dbContext.Companies
                 .Include(x => x.Employees)

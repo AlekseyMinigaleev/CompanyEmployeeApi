@@ -57,7 +57,7 @@ namespace CompanyEmployeeApi.Features.Company
             CancellationToken cancellationToken)
         {
             var deletedCompany = await _companyService
-                .DeleteByIdsAsync(id, cancellationToken);
+                .DeleteByIdAsync(id, cancellationToken);
 
             if (deletedCompany is null)
                 return NotFound();
