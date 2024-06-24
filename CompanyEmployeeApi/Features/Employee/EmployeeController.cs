@@ -24,6 +24,23 @@ namespace CompanyEmployeeApi.Features.Employee
             return Ok(employee);
         }
 
-    {
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAsync(
+            CreateEmployeeViewModel createEmployeeVM,
+            [FromServices] IValidator<CreateEmployeeViewModel> validator,
+            CancellationToken cancellationToken)
+        {
+            await ValidateAndChangeModelStateAsync(validator, createEmployeeVM, cancellationToken);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var createdEmployee = await _employeeService
+                .CreateAsync(createEmployeeVM, cancellationToken);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdEmployee.Id },
+                createdEmployee);
+        }
     }
 }
