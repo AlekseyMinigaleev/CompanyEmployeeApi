@@ -8,6 +8,11 @@ namespace CompanyEmployeeApi.Extenstions
 {
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Метод расширения для добавления конфигурации хранилища данных в сервисы.
+        /// </summary>
+        /// <param name="services">Коллекция сервисов для добавления новых сервисов.</param>
+        /// <param name="configuration">Конфигурация приложения для доступа к строке подключения.</param>
         public static void AddStorage(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration
@@ -20,10 +25,14 @@ namespace CompanyEmployeeApi.Extenstions
             );
         }
 
+        /// <summary>
+        /// Метод расширения для добавления сервисов приложения в коллекцию сервисов.
+        /// </summary>
+        /// <param name="services">Коллекция сервисов для добавления сервисов приложения.</param>
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<ICompanyService, CompanyService>();
-            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<ICompanyCrudService, CompanyService>();
+            services.AddTransient<IEmployeeCrudService, EmployeeService>();
         }
     }
 }

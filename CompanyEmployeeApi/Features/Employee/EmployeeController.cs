@@ -4,14 +4,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyEmployeeApi.Features.Employee
 {
-    public class EmployeeController(EmployeeService employeeService) : BaseApiController
+    /// <summary>
+    /// Контроллер для управления сотрудниками.
+    /// </summary>
+    public class EmployeeController(IEmployeeCrudService employeeService) : BaseApiController
     {
-        private readonly EmployeeService _employeeService = employeeService;
+        private readonly IEmployeeCrudService _employeeService = employeeService;
 
+        /// <summary>
+        /// Получает список всех сотрудников.
+        /// </summary>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Список всех сотрудников.</returns>
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken) =>
             Ok(await _employeeService.GetAllAsync(cancellationToken));
 
+        /// <summary>
+        /// Получает информацию о сотруднике по его идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор сотрудника.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Информация о сотруднике или NotFound, если сотрудник не найден.</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
@@ -24,6 +38,13 @@ namespace CompanyEmployeeApi.Features.Employee
             return Ok(employee);
         }
 
+        /// <summary>
+        /// Создает нового сотрудника.
+        /// </summary>
+        /// <param name="createEmployeeVM">ViewModel для создания сотрудника.</param>
+        /// <param name="validator">Валидатор для ViewModel создания сотрудника.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Созданный сотрудник.</returns>
         [HttpPost("create")]
         public async Task<IActionResult> CreateAsync(
             CreateEmployeeViewModel createEmployeeVM,
@@ -43,6 +64,12 @@ namespace CompanyEmployeeApi.Features.Employee
                 createdEmployee);
         }
 
+        /// <summary>
+        /// Удаляет сотрудника по его идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор сотрудника.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Удаленный сотрудник или NotFound, если сотрудник не найден.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             Guid id,
@@ -57,6 +84,14 @@ namespace CompanyEmployeeApi.Features.Employee
             return Ok(deletedEmployee);
         }
 
+        /// <summary>
+        /// Обновляет информацию о сотруднике по его идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор сотрудника.</param>
+        /// <param name="updateEmployeeVm">ViewModel для обновления информации о сотруднике.</param>
+        /// <param name="validator">Валидатор для ViewModel обновления информации о сотруднике.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Обновленная информация о сотруднике или NotFound, если сотрудник не найден.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateByIdAsync(
             Guid id,

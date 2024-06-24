@@ -4,10 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyEmployeeApi.Features.Company
 {
-    public class CompanyController(ICompanyService companyService) : BaseApiController
+    /// <summary>
+    /// Контроллер для операций с компаниями.
+    /// </summary>
+    public class CompanyController(ICompanyCrudService companyService) : BaseApiController
     {
-        private readonly ICompanyService _companyService = companyService;
+        private readonly ICompanyCrudService _companyService = companyService;
 
+        /// <summary>
+        /// Получает все компании.
+        /// </summary>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Список всех компаний.</returns>
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
@@ -17,6 +25,12 @@ namespace CompanyEmployeeApi.Features.Company
             return Ok(companies);
         }
 
+        /// <summary>
+        /// Получает компанию по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор компании.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Запись компании или 404, если не найдена.</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(
             Guid id,
@@ -31,6 +45,13 @@ namespace CompanyEmployeeApi.Features.Company
             return Ok(company);
         }
 
+        /// <summary>
+        /// Создает новую компанию.
+        /// </summary>
+        /// <param name="companyVM">ViewModel для создания компании.</param>
+        /// <param name="validator">Валидатор для ViewModel создания компании.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Созданная запись компании.</returns>
         [HttpPost("create")]
         public async Task<IActionResult> CreateCompany(
             [FromBody] CreateCompanyViewModel companyVM,
@@ -51,6 +72,12 @@ namespace CompanyEmployeeApi.Features.Company
                 createdCompany);
         }
 
+        /// <summary>
+        /// Удаляет компанию по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор компании.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Удаленная запись компании или 404, если не найдена.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync(
             Guid id,
@@ -65,6 +92,14 @@ namespace CompanyEmployeeApi.Features.Company
             return Ok(deletedCompany);
         }
 
+        /// <summary>
+        /// Обновляет компанию по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор компании.</param>
+        /// <param name="companyVM">ViewModel для обновления компании.</param>
+        /// <param name="validator">Валидатор для ViewModel обновления компании.</param>
+        /// <param name="cancellationToken">Токен отмены.</param>
+        /// <returns>Обновленная запись компании или 404, если не найдена.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateByIdAsync(
             Guid id,

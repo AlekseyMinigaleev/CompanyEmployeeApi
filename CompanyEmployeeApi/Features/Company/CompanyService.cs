@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CompanyEmployeeApi.Features.Company
 {
-    public class CompanyService(AppDbContext dbContext) : ICompanyService
+    /// <inheritdoc cref="ICompanyCrudService"/>
+    public class CompanyService(AppDbContext dbContext) : ICompanyCrudService
     {
         private readonly AppDbContext _dbContext = dbContext;
 
