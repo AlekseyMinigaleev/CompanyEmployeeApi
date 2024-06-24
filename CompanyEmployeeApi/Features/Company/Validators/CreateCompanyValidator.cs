@@ -44,15 +44,16 @@ namespace CompanyEmployeeApi.Features.Company.Validators
                     if (!isIdsUnique)
                         return false;
 
-                    var existEmployeeIds = dbContext.Employees.Select(x => x.Id);
+                    var existEmployeeIds = dbContext.Employees
+                        .Where(x => ids.Contains(x.Id) && x.CompanyId == null)
+                        .ToArray();
 
-                    var isExistedIds = ids
-                        .All(x => existEmployeeIds.Contains(x));
+                    var isExistedIds = existEmployeeIds.Length == ids.Length;
 
                     return isExistedIds;
                 })
                 .WithErrorCode(nameof(CreateCompanyViewModel.EmployeeIds))
-                .WithMessage($"EmployeeIds must be unique and exist in the database.");
+                .WithMessage($"EmployeeIds must be unique and exist in the database, and each employee must not belong to any company.");
         }
     }
 }
