@@ -80,15 +80,23 @@
         /// <param name="company">Компания, к которой принадлежит сотрудник.</param>
         public void SetCompany(CompanyModel? company)
         {
-            Company = company;
-            CompanyId = company?.Id;
 
             if (company is null && Company is not null)
+            {
                 TerminationDate = DateTime.UtcNow;
+            }
             else if (company is null)
+            {
                 EmploymentDate = null;
+            }
             else
+            {
                 EmploymentDate = DateTime.UtcNow;
+                TerminationDate = null;
+            }
+
+            Company = company;
+            CompanyId = company?.Id;
         }
 
         /// <summary>

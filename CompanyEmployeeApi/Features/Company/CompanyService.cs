@@ -50,13 +50,18 @@ namespace CompanyEmployeeApi.Features.Company
         public async Task<CompanyModel?> DeleteByIdsAsync(Guid id, CancellationToken cancellationToken)
         {
             var companyToDelete = await _dbContext.Companies
+                .Include(x => x.Employees)
                 .SingleOrDefaultAsync(
                     x => x.Id == id,
                     cancellationToken);
 
             if (companyToDelete is not null)
             {
-                _dbContext.Companies.RemoveRange(companyToDelete);
+                companyToDelete.Employees
+                    .ToList()
+                    .ForEach(x => x.SetCompany(null));
+
+                _dbContext.Companies.Remove(companyToDelete);
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
 
