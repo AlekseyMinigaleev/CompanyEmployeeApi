@@ -42,5 +42,20 @@ namespace CompanyEmployeeApi.Features.Employee
                 new { id = createdEmployee.Id },
                 createdEmployee);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken)
+        {
+            var deletedEmployee = await _employeeService
+                .DeleteByIdAsync(id, cancellationToken);
+
+            if(deletedEmployee is null)
+                return NotFound();
+
+
+            return Ok(deletedEmployee);
+        }
     }
 }

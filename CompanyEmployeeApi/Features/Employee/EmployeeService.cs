@@ -40,5 +40,22 @@ namespace CompanyEmployeeApi.Features.Employee
 
             return employee;
         }
+
+        public async Task<EmployeeModel?> DeleteByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken)
+        {
+            var employeeToDelete = await _dbContext.Employees
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            if (employeeToDelete is not null)
+            {
+                _dbContext.Employees.Remove(employeeToDelete);
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            return employeeToDelete;
+        }
     }
 }
