@@ -41,6 +41,7 @@ namespace CompanyEmployeeApi.Features.Company
             CancellationToken cancellationToken)
         {
             var company = await _dbContext.Companies
+                .Include(x => x.Employees)
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             return company;

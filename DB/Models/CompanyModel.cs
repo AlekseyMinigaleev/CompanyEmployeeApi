@@ -41,7 +41,7 @@
             Name = name;
             Address = address;
             Industry = industry;
-            Employees = employees;
+            SetEmployees(employees);
         }
 
         private CompanyModel()
