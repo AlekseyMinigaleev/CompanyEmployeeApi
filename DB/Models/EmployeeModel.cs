@@ -58,16 +58,13 @@
             CompanyModel? company)
         {
             Id = Guid.NewGuid();
-            FirstName = firstName;
-            LastName = lastName;
-            Position = position;
-            Email = email;
 
-            if (company is not null)
-                EmploymentDate = DateTime.UtcNow;
-
-            Company = company;
-            CompanyId = company?.Id;
+            Update(
+                firstName: firstName,
+                lastName: lastName,
+                position: position,
+                email: email,
+                company: company);
         }
 
         private EmployeeModel()
@@ -106,18 +103,18 @@
         /// <param name="lastName">Новая фамилия сотрудника.</param>
         /// <param name="position">Новая должность сотрудника.</param>
         public void Update(
-            string? firstName,
-            string? lastName,
-            string? position)
+            string firstName,
+            string lastName,
+            string position,
+            string email,
+            CompanyModel? company)
         {
-            if (firstName is not null)
                 FirstName = firstName;
-
-            if (lastName is not null)
                 LastName = lastName;
+            Position = position;
+            Email = email;
 
-            if (position is not null)
-                Position = position;
+            SetCompany(company);
         }
     }
 }

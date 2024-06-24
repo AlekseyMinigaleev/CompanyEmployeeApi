@@ -51,11 +51,39 @@ namespace CompanyEmployeeApi.Features.Employee
             var deletedEmployee = await _employeeService
                 .DeleteByIdAsync(id, cancellationToken);
 
-            if(deletedEmployee is null)
+            if (deletedEmployee is null)
                 return NotFound();
 
-
             return Ok(deletedEmployee);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateByIdAsync(
+            Guid id,
+            [FromBody] UpdateEmployeeViewModel updateEmployeeVm,
+            [FromServices] IValidator<UpdateEmployeeViewModel> validator,
+            CancellationToken cancellationToken)
+        {
+            updateEmployeeVm.EmployeeId = id;
+
+            await ValidateAndChangeModelStateAsync(
+                validator,
+                updateEmployeeVm,
+                cancellationToken);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var updatedEmployee = await _employeeService
+                .UpdateByIdAsync(updateEmployeeVm, cancellationToken);
+
+            if (updatedEmployee is null)
+                return NotFound();
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = updatedEmployee.Id },
+                updatedEmployee);
         }
     }
 }

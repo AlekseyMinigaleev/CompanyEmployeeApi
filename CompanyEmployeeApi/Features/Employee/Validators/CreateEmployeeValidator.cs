@@ -8,25 +8,9 @@ namespace CompanyEmployeeApi.Features.Employee.Validators
     {
         public CreateEmployeeValidator(AppDbContext dbContext)
         {
-            RuleFor(x => x.FirstName)
-                 .NotEmpty()
-                     .WithErrorCode(nameof(CreateEmployeeViewModel.FirstName))
-                     .WithMessage($"{nameof(CreateEmployeeViewModel.FirstName)} is required.");
-
-            RuleFor(x => x.LastName)
-                .NotEmpty()
-                    .WithErrorCode(nameof(CreateEmployeeViewModel.LastName))
-                    .WithMessage($"{nameof(CreateEmployeeViewModel.LastName)} is required.");
-
-            RuleFor(x => x.Position)
-                .NotEmpty()
-                    .WithErrorCode(nameof(CreateEmployeeViewModel.Position))
-                    .WithMessage($"{nameof(CreateEmployeeViewModel.Position)} is required.");
+            Include(new EmployeeValidator(dbContext));
 
             RuleFor(x => x.Email)
-                .EmailAddress()
-                    .WithErrorCode(nameof(CreateEmployeeViewModel.Email))
-                    .WithMessage($"{nameof(CreateEmployeeViewModel.Email)} is Email.")
                 .Must((email) =>
                 {
                     var employee = dbContext.Employees
@@ -34,19 +18,8 @@ namespace CompanyEmployeeApi.Features.Employee.Validators
 
                     return employee is null;
                 })
-                    .WithErrorCode(nameof(CreateEmployeeViewModel.Email))
-                    .WithMessage($"{nameof(CreateEmployeeViewModel.Email)} is unique.");
-
-            RuleFor(x => x.CompanyId)
-                .Must(companyId =>
-                {
-                    if (companyId is null)
-                        return true;
-
-                    var employee = dbContext.Companies.SingleOrDefault(x => x.Id == companyId);
-
-                    return employee is not null;
-                });
+                .WithErrorCode(nameof(CreateEmployeeViewModel.Email))
+                .WithMessage($"{nameof(CreateEmployeeViewModel.Email)} is unique.");
         }
     }
 }

@@ -5,16 +5,8 @@
         string lastName,
         string position,
         string email,
-        Guid? companyId)
+        Guid? companyId) : EmployeeViewModel(firstName, lastName, position, email, companyId)
     {
-        public string FirstName { get; set; } = firstName;
 
-        public string LastName { get; set; } = lastName;
-
-        public string Position { get; set; } = position;
-
-        public string Email { get; set; } = email;
-
-        public Guid? CompanyId { get; set; } = companyId;
     }
 }

@@ -57,5 +57,36 @@ namespace CompanyEmployeeApi.Features.Employee
 
             return employeeToDelete;
         }
+
+        public async Task<EmployeeModel?> UpdateByIdAsync(
+            UpdateEmployeeViewModel updateEmployeeVm,
+            CancellationToken cancellationToken)
+        {
+            var companyToUpdate = await _dbContext.Employees
+                .Include(x => x.Company)
+                .SingleOrDefaultAsync(
+                    x => x.Id == updateEmployeeVm.EmployeeId,
+                    cancellationToken);
+
+            if (companyToUpdate is not null)
+            {
+                var company = await _dbContext.Companies
+                    .SingleOrDefaultAsync(
+                        x => x.Id == updateEmployeeVm.CompanyId,
+                        cancellationToken);
+
+                companyToUpdate.Update(
+                    firstName: updateEmployeeVm.FirstName,
+                    lastName: updateEmployeeVm.LastName,
+                    position: updateEmployeeVm.Position,
+                    email: updateEmployeeVm.Email,
+                    company: company);
+
+                await _dbContext
+                    .SaveChangesAsync(cancellationToken);
+            }
+
+            return companyToUpdate;
+        }
     }
 }
