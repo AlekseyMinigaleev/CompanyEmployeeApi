@@ -80,7 +80,7 @@ namespace CompanyEmployeeApi.Features.Company
                 return BadRequest(ModelState);
 
             var updatedCompany = await _companyService
-                .UpdateByIdAsync(id, companyVM, cancellationToken);
+                .UpdateByIdAsync(companyVM, cancellationToken);
 
             if (updatedCompany is null)
                 return NotFound();

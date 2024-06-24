@@ -21,7 +21,6 @@ namespace CompanyEmployeeApi.Features.Company
             CancellationToken cancellationToken);
 
         public Task<CompanyModel?> UpdateByIdAsync(
-            Guid id,
             UpdateCompanyViewModel companyVM,
             CancellationToken cancellationToken);
     }

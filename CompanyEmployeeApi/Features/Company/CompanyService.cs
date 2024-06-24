@@ -69,13 +69,12 @@ namespace CompanyEmployeeApi.Features.Company
         }
 
         public async Task<CompanyModel?> UpdateByIdAsync(
-            Guid id,
             UpdateCompanyViewModel companyVM,
             CancellationToken cancellationToken)
         {
             var companyToUpdate = await _dbContext.Companies
                 .Include(x => x.Employees)
-                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+                .SingleOrDefaultAsync(x => x.Id == companyVM.CompanyId, cancellationToken);
 
             if (companyToUpdate is not null)
             {
