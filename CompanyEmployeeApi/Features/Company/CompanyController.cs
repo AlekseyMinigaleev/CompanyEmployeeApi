@@ -12,7 +12,7 @@ namespace CompanyEmployeeApi.Features.Company
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var companies = await _companyService
-                .GetAllCompaniesAsync(cancellationToken);
+                .GetAllAsync(cancellationToken);
 
             return Ok(companies);
         }
@@ -23,7 +23,7 @@ namespace CompanyEmployeeApi.Features.Company
             CancellationToken cancellationToken)
         {
             var company = await _companyService
-                .GetCompanyByIdAsync(id, cancellationToken);
+                .GetByIdAsync(id, cancellationToken);
 
             if (company is null)
                 return NotFound();
@@ -43,12 +43,26 @@ namespace CompanyEmployeeApi.Features.Company
                 return BadRequest(ModelState);
 
             var createdCompany = await _companyService
-                .CreateCompanyAsync(company, cancellationToken);
+                .CreateAsync(company, cancellationToken);
 
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = createdCompany.Id },
                 createdCompany);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteById(
+            Guid id,
+            CancellationToken cancellationToken)
+        {
+            var deletedCompany = await _companyService
+                .DeleteByIdsAsync(id, cancellationToken);
+
+            if(deletedCompany is null)
+                return NotFound();
+
+            return Ok(deletedCompany);
         }
     }
 }

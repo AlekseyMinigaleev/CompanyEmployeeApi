@@ -9,7 +9,7 @@ namespace CompanyEmployeeApi.Features.Company
     {
         private readonly AppDbContext _dbContext = dbContext;
 
-        public async Task<CompanyModel> CreateCompanyAsync(
+        public async Task<CompanyModel> CreateAsync(
             CreateCompanyViewModel createCompanyVM,
             CancellationToken cancellationToken)
         {
@@ -31,12 +31,12 @@ namespace CompanyEmployeeApi.Features.Company
             return company;
         }
 
-        public async Task<CompanyModel[]> GetAllCompaniesAsync(CancellationToken cancellationToken) =>
+        public async Task<CompanyModel[]> GetAllAsync(CancellationToken cancellationToken) =>
             await _dbContext.Companies
                 .Include(x => x.Employees)
                 .ToArrayAsync(cancellationToken);
 
-        public async Task<CompanyModel?> GetCompanyByIdAsync(
+        public async Task<CompanyModel?> GetByIdAsync(
             Guid id,
             CancellationToken cancellationToken)
         {
@@ -45,6 +45,22 @@ namespace CompanyEmployeeApi.Features.Company
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             return company;
+        }
+
+        public async Task<CompanyModel?> DeleteByIdsAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var companyToDelete = await _dbContext.Companies
+                .SingleOrDefaultAsync(
+                    x => x.Id == id,
+                    cancellationToken);
+
+            if (companyToDelete is not null)
+            {
+                _dbContext.Companies.RemoveRange(companyToDelete);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            return companyToDelete;
         }
     }
 }
