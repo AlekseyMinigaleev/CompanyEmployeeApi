@@ -1,4 +1,5 @@
 ﻿using CompanyEmployeeApi.Features.Company;
+using CompanyEmployeeApi.Features.Employee;
 using DB;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ namespace CompanyEmployeeApi.Extenstions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<ICompanyService, CompanyService>();
+            services.AddTransient<EmployeeService, EmployeeService>();
         }
     }
 }
